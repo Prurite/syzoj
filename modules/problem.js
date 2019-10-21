@@ -199,14 +199,11 @@ app.get('/problem/:id', async (req, res) => {
     let problem = await Problem.findById(id);
     if (!problem) throw new ErrorMessage('无此题目。');
 
-    if (!await problem.isAllowedUseBy(res.locals.user)) {
-      throw new ErrorMessage('您没有权限进行此操作。');
-    }
-
     problem.allowedEdit = await problem.isAllowedEditBy(res.locals.user);
+    problem.allowedView = await problem.isAllowedUseBy(res.locals.user);
     problem.allowedManage = await problem.isAllowedManageBy(res.locals.user);
 
-    if (problem.is_public || problem.allowedEdit) {
+    if (problem.is_public || problem.allowedEdit || problem.allowedView) {
       await syzoj.utils.markdown(problem, ['description', 'input_format', 'output_format', 'example', 'limit_and_hint']);
     } else {
       throw new ErrorMessage('您没有权限进行此操作。');
@@ -349,6 +346,8 @@ app.post('/problem/:id/edit', async (req, res) => {
     problem.example = req.body.example;
     problem.limit_and_hint = req.body.limit_and_hint;
     problem.is_anonymous = (req.body.is_anonymous === 'on');
+    problem.user_group_view_problem = req.body.user_group_view_problem;
+    problem.user_group_view_data = req.body.user_group_view_data;
 
     // Save the problem first, to have the `id` allocated
     await problem.save();

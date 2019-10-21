@@ -102,6 +102,12 @@ export default class Problem extends Model {
   @TypeORM.Column({ nullable: true, type: "text" })
   file_io_output_name: string;
 
+  @TypeORM.Column({ nullable: true, type: "text" })
+  user_group_view_problem: string;
+
+  @TypeORM.Column({ nullable: true, type: "text" })
+  user_group_view_data: string;
+
   @TypeORM.Index()
   @TypeORM.Column({ nullable: true, type: "datetime" })
   publicize_time: Date;
@@ -129,10 +135,19 @@ export default class Problem extends Model {
     return this.user_id === user.id;
   }
 
-  async isAllowedUseBy(user) {
+  async isAllowedUseBy(user : User | undefined | null) {
     if (this.is_public) return true;
     if (!user) return false;
     if (await user.hasPrivilege('manage_problem')) return true;
+    if (this.user_id === user.id) return true;
+    if (this.user_group_view_problem) {
+      let current_group = user.getUserGroupList();
+      let allow_group = this.user_group_view_problem.split(',');
+      for (const index in allow_group) {
+        if (current_group.has(allow_group[index]))
+          return true;
+      }
+    }
     return this.user_id === user.id;
   }
 

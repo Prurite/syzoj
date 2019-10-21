@@ -63,6 +63,9 @@ export default class User extends Model {
   @TypeORM.Column({ nullable: true, type: "integer" })
   register_time: number;
 
+  @TypeORM.Column({ nullable: true, type: "text" })
+  user_group: string;
+
   static async fromEmail(email): Promise<User> {
     return User.findOne({
       where: {
@@ -77,6 +80,11 @@ export default class User extends Model {
         username: name
       }
     });
+  }
+
+  getUserGroupList(): Set<string> {
+    if (!this.user_group) return new Set<string>();
+    return new Set<string>(this.user_group.split(','));
   }
 
   async isAllowedEditBy(user) {

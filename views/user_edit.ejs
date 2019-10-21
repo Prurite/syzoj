@@ -33,6 +33,10 @@
           <input id="public_email" name="public_email" type="checkbox" <% if (edited_user.public_email) { %> checked<% } %>>
           <label>　</label>
         </div>
+      </div>
+	    <div class="field">
+	    	<label for="user_group">用户组（用英文,分割，不要有空格）</label>
+	    	<input class="font-content" type="text" id="user_group" name="user_group" value="<%= edited_user.user_group%>"<% if (!user.allowedManage) { %> readonly<% } %>>
 	    </div>
       <div class="inline field">
         <label class="ui header">默认显示格式化后的代码（如果可用）</label>
