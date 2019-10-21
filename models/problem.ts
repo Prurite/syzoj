@@ -143,10 +143,10 @@ export default class Problem extends Model {
     if (this.user_group_view_problem) {
       let current_group = user.getUserGroupList();
       let allow_group = this.user_group_view_problem.split(',');
-      for (const index in allow_group) {
-        if (current_group.has(allow_group[index]))
-          return true;
-      }
+      for (const i in allow_group)
+        for (const j in current_group)
+          if (allow_group[i] === current_group[j])
+            return true;
     }
     return this.user_id === user.id;
   }

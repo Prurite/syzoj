@@ -25,6 +25,9 @@ app.get('/problems', async (req, res) => {
       if (res.locals.user) {
         query.where('is_public = 1')
              .orWhere('user_id = :user_id', { user_id: res.locals.user.id });
+        let nowGroup = res.locals.user.getUserGroupList();
+        for ( let i = 0; i < nowGroup.length; i++ )
+          query.orWhere('user_group_view_problem LIKE :group', { group: `%${nowGroup[i]}%` } );
       } else {
         query.where('is_public = 1');
       }

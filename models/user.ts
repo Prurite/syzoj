@@ -82,9 +82,9 @@ export default class User extends Model {
     });
   }
 
-  getUserGroupList(): Set<string> {
-    if (!this.user_group) return new Set<string>();
-    return new Set<string>(this.user_group.split(','));
+  getUserGroupList(): string[] {
+    if (!this.user_group) return [];
+    return this.user_group.split(',');
   }
 
   async isAllowedEditBy(user) {

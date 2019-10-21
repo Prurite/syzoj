@@ -100,7 +100,6 @@ if (typeof tags !== 'undefined') tagIDs = tags.map(x => x.id);
     </thead>
     <tbody>
     <% for (let problem of problems) { %>
-        <% if (problem.is_public || problem.allowedEdit) { %>
         <tr style="height: 44px; ">
             <% if (user) { %>
                 <td>
@@ -116,7 +115,7 @@ if (typeof tags !== 'undefined') tagIDs = tags.map(x => x.id);
             <td><b><%= problem.id %></b></td>
             <td class="left aligned">
               <a style="vertical-align: middle; " href="<%= syzoj.utils.makeUrl(['problem', problem.id]) %>"><%= problem.title %>
-                <% if (!problem.is_public) { %><span class="ui header"><span class="ui tiny red label">未公开</span></span><% } %>
+                <% if (!problem.is_public) { %><span class="ui header"><span class="ui tiny grey label">未公开</span></span><% } %>
               </a>
               <div class="show_tag_controled" style="float: right; ">
                 <%
@@ -144,7 +143,6 @@ if (typeof tags !== 'undefined') tagIDs = tags.map(x => x.id);
             <td><%= problem.submit_num %></td>
             <td><%= problem.submit_num != 0 ? (((problem.ac_num / problem.submit_num * 100) || 0).toFixed(2) + '%') : '-' %></td>
         </tr>
-        <% } %>
     <% } %>
     </tbody>
   </table><br>
