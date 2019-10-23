@@ -56,7 +56,14 @@ app.get('/login', async (req, res) => {
 
 // Sign up
 app.get('/sign_up', async (req, res) => {
-  if (res.locals.user) {
+  if ( syzoj.config.permission.disable_sign_up )
+    if ( res.locals.user && res.locals.user.hasPrivilege( 'manage_user' ) )
+      res.render( 'sign_up' );
+    else
+      res.render('error', {
+        err: new ErrorMessage('注册已关闭。请联系管理员。')
+      });
+  else if (res.locals.user) {
     res.render('error', {
       err: new ErrorMessage('您已经登录了，请先注销。', { '注销': syzoj.utils.makeUrl(['logout'], { 'url': req.originalUrl }) })
     });
@@ -192,6 +199,7 @@ app.post('/user/:id/edit', async (req, res) => {
     user.public_email = (req.body.public_email === 'on');
     user.prefer_formatted_code = (req.body.prefer_formatted_code === 'on');
     user.user_group = req.body.user_group;
+    user.nameplate = req.body.nameplate;
 
     await user.save();
 
