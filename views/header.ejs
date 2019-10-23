@@ -72,7 +72,7 @@
               <% if (user) { %>
               <a href="<%= syzoj.utils.makeUrl(['user', user.id]) %>" style="color: inherit; ">
               <div class="ui simple dropdown item">
-                <%= user.username %> <% if (user.nameplate) { %><span class="ui tiny grey label"><%- user.nameplate %></span><% } %> <i class="dropdown icon"></i>
+                <%= user.username %> <% if (user.nameplate) { %><span class="ui teal horizontal label"><%- user.nameplate %></span><% } %> <i class="dropdown icon"></i>
                 <div class="menu">
                   <a class="item" href="<%= syzoj.utils.makeUrl(['user', user.id, 'edit']) %>"><i class="edit icon"></i>修改资料</a>
                   <% if (user.is_admin) { %>
