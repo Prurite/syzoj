@@ -177,13 +177,16 @@ app.post('/user/:id/edit', async (req, res) => {
       user.password = req.body.new_password;
     }
 
-    if (res.locals.user && await res.locals.user.hasPrivilege('manage_user')) {
+    if (await res.locals.user.hasPrivilege('manage_user')) {
       if (!syzoj.utils.isValidUsername(req.body.username)) throw new ErrorMessage('无效的用户名。');
       user.username = req.body.username;
       user.email = req.body.email;
       user.user_group = req.body.user_group;
     }
 
+    if (await res.locals.user.hasPrivilege('manage_user') || syzoj.config.permission.allow_edit_nameplate)
+      user.nameplate = req.body.nameplate;
+  
     if (res.locals.user && res.locals.user.is_admin) {
       if (!req.body.privileges) {
         req.body.privileges = [];
@@ -199,7 +202,6 @@ app.post('/user/:id/edit', async (req, res) => {
     user.sex = req.body.sex;
     user.public_email = (req.body.public_email === 'on');
     user.prefer_formatted_code = (req.body.prefer_formatted_code === 'on');
-    user.nameplate = req.body.nameplate;
 
     await user.save();
 
