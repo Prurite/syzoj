@@ -85,7 +85,7 @@
       let allowedManagePrivilege = user && user.is_admin;
       %>
       <div class="inline field">
-        <% if ( user.username != 'xiong_yc' ) { %>
+        <% if ( user.user_id != 2 /*xiong_yc*/ ) { %>
         <label class="ui header">权限</label>
         <div class="ui toggle disabled checkbox" style="margin-right: 20px; ">
           <input disabled="disabled" type="checkbox" <% if (edited_user.is_admin) { %> checked<% } %>>

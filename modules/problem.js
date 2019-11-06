@@ -26,8 +26,8 @@ app.get('/problems', async (req, res) => {
         query.where('is_public = 1')
              .orWhere('user_id = :user_id', { user_id: res.locals.user.id });
         let nowGroup = res.locals.user.getUserGroupList();
-        for ( let i = 0; i < nowGroup.length; i++ )
-          query.orWhere('user_group_view_problem LIKE :group', { group: `%${nowGroup[i]}%` } );
+        for (let i = 0; i < nowGroup.length; i++)
+          query.orWhere('user_group_view_problem LIKE :group', { group: `%${nowGroup[i]}%` });
       } else {
         query.where('is_public = 1');
       }
@@ -349,6 +349,14 @@ app.post('/problem/:id/edit', async (req, res) => {
     problem.example = req.body.example;
     problem.limit_and_hint = req.body.limit_and_hint;
     problem.is_anonymous = (req.body.is_anonymous === 'on');
+
+    let sta1 = syzoj.utils.isValidUserGroupList(req.body.user_group_view_problem);
+    let sta2 = syzoj.utils.isValidUserGroupList(req.body.user_group_view_data);
+    if (sta1 == -1 || sta2 == -1)
+      throw new ErrorMessage('用户组功能未启用');
+    else if (sta1 == 0 || sta2 == 0)
+      throw new ErrorMessage('无效的用户组');
+
     problem.user_group_view_problem = req.body.user_group_view_problem;
     problem.user_group_view_data = req.body.user_group_view_data;
 
@@ -756,7 +764,7 @@ app.get('/problem/:id/testdata', async (req, res) => {
     let problem = await Problem.findById(id);
 
     if (!problem) throw new ErrorMessage('无此题目。');
-    if (!await problem.isAllowedUseBy(res.locals.user) || !await problem.isAllowedViewDataBy(res.locals.user))
+    if (!await problem.isAllowedUseBy(res.locals.user))
       throw new ErrorMessage('您没有权限进行此操作。');
 
     let testdata = await problem.listTestdata();
@@ -842,10 +850,13 @@ app.get('/problem/:id/testdata/download/:filename?', async (req, res) => {
 
     if (!problem) throw new ErrorMessage('无此题目。');
 
-    if (!await problem.isAllowedUseBy(res.locals.user) || !await problem.isAllowedViewDataBy(res.locals.user))
+    let is_photo = req.params.filename && req.params.filename.toLowerCase().match('\.(jpg|png)');
+
+    if (!is_photo && (!await problem.isAllowedUseBy(res.locals.user) || !await problem.isAllowedViewDataBy(res.locals.user)))
       throw new ErrorMessage('您没有权限进行此操作。');
 
-    if (typeof req.params.filename === 'string' && (req.params.filename.includes('../'))) throw new ErrorMessage('您没有权限进行此操作。)');
+    if (typeof req.params.filename === 'string' && (req.params.filename.includes('../')))
+      throw new ErrorMessage('您没有权限进行此操作。)');
 
     if (!req.params.filename) {
       if (!await syzoj.utils.isFile(problem.getTestdataArchivePath())) {

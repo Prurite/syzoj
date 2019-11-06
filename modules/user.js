@@ -179,6 +179,11 @@ app.post('/user/:id/edit', async (req, res) => {
       if (!syzoj.utils.isValidUsername(req.body.username)) throw new ErrorMessage('无效的用户名。');
       user.username = req.body.username;
       user.email = req.body.email;
+      let sta = syzoj.utils.isValidUserGroupList(req.body.user_group);
+      if (sta == -1)
+        throw new ErrorMessage('用户组功能未启用');
+      else if (sta == 0)
+        throw new ErrorMessage('无效的用户组');
       user.user_group = req.body.user_group;
     }
 

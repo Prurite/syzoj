@@ -142,9 +142,9 @@ export default class Problem extends Model {
     if (this.user_group_view_problem) {
       let current_group = user.getUserGroupList();
       let allow_group = this.user_group_view_problem.split(',');
-      for (const i in allow_group)
-        for (const j in current_group)
-          if (allow_group[i] === current_group[j])
+      for (let i = 0; i < allow_group.length; i++)
+        for (let j = 0; j < current_group.length; j++)
+          if (allow_group[i].trim() === current_group[j].trim())
             return true;
     }
     return this.user_id === user.id;
@@ -156,10 +156,10 @@ export default class Problem extends Model {
     if (await user.hasPrivilege('manage_problem')) return true;
     if (this.user_group_view_data) {
       let current_group = user.getUserGroupList();
-      let allow_group = this.user_group_view_problem.split(',');
-      for (const i in allow_group)
-        for (const j in current_group)
-          if (allow_group[i] === current_group[j])
+      let allow_group = this.user_group_view_data.split(',');
+      for (let i = 0; i < allow_group.length; i++)
+        for (let j = 0; j < current_group.length; j++)
+          if (allow_group[i].trim() === current_group[j].trim())
             return true;
     }
     return this.user_id === user.id;

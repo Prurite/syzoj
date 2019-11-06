@@ -9,6 +9,7 @@
 
 - [x] 制定题目编号
 
+
 ---
 
 Change log
@@ -29,3 +30,9 @@ Change log
 
 problem 加入 isAllowedUseBy ，判断用户是否有权查看题面
 problem 加入 isAllowedViewDataBy ，判断用户是否有权查看数据
+syzoj.utils 加入 isValidUserGroupList(s) ，传入当前需校验的用户组列表（字符串），
+    返回 -1 表示用户组未启用， 0 表示无效， 1 表示有效
+
+---
+
+用户组功能简介：咕

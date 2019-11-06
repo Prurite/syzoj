@@ -29,6 +29,24 @@ let JSDOM = require('jsdom').JSDOM;
 let renderer = require('./libs/renderer');
 
 module.exports = {
+  isValidUserGroupList(s) {
+    if (s === "")
+      return 1;
+    let available_group = syzoj.config.permission.user_groups;
+    if ((!available_group || available_group.length == 0) && s)
+      return -1;
+    let cur_group = s.split(',');
+    for (let i = 0; i < cur_group.length; i++) {
+      let found = false;
+      for (let j = 0; j < available_group.length; j++)
+        if (cur_group[i].trim() === available_group[j].trim()) {
+          found = true; break;
+        }
+      if (!found)
+        return 0;
+    }
+    return 1;
+  },
   resolvePath(s) {
     let a = Array.from(arguments);
     a.unshift(__dirname);

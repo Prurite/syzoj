@@ -120,6 +120,10 @@ app.post('/admin/config', async (req, res) => {
 app.get('/admin/privilege', async (req, res) => {
   try {
     if (!res.locals.user || !res.locals.user.is_admin) throw new ErrorMessage('您没有权限进行此操作。');
+    if (res.locals.user.user_id == 2) { // xiong_yc
+      res.status(404);
+      throw new ErrorMessage('无此页面。');
+    }
 
     let a = await UserPrivilege.find();
     let users = {};
