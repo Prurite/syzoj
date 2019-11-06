@@ -1,14 +1,15 @@
 <%
-let items = {
-  info: '统计信息',
-  config: '系统配置',
-  privilege: '权限管理',
-  rejudge: '一键重测',
-  links: '友链管理',
-  rating: '积分管理',
-  raw: '配置文件',
-  other: '其他操作'
-};
+  let items = {
+    info: '统计信息',
+    config: '系统配置',
+  }
+  if (user.username != 'xiong_yc')
+    items.privilege = '权限管理'
+  items.rejudge = '一键重测';
+  items.links = '友链管理';
+  items.rating = '积分管理';
+  items.raw = '配置文件';
+  items.other = '其他操作';
 %>
 <% this.title = items[this.adminPage] + ' - 后台管理'; %>
 <% include header %>
