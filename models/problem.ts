@@ -139,8 +139,22 @@ export default class Problem extends Model {
     if (this.is_public) return true;
     if (!user) return false;
     if (await user.hasPrivilege('manage_problem')) return true;
-    if (this.user_id === user.id) return true;
     if (this.user_group_view_problem) {
+      let current_group = user.getUserGroupList();
+      let allow_group = this.user_group_view_problem.split(',');
+      for (const i in allow_group)
+        for (const j in current_group)
+          if (allow_group[i] === current_group[j])
+            return true;
+    }
+    return this.user_id === user.id;
+  }
+
+  async isAllowedViewDataBy(user : User | undefined | null) {
+    if (this.is_public) return true;
+    if (!user) return false;
+    if (await user.hasPrivilege('manage_problem')) return true;
+    if (this.user_group_view_data) {
       let current_group = user.getUserGroupList();
       let allow_group = this.user_group_view_problem.split(',');
       for (const i in allow_group)
