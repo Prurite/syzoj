@@ -160,8 +160,6 @@ app.get('/forget', async (req, res) => {
   res.render('forget');
 });
 
-
-
 app.post('/user/:id/edit', async (req, res) => {
   let user;
   try {

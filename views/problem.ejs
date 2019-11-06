@@ -33,8 +33,8 @@ if (contest) {
     </div>
     <% if (problem.type !== 'submit-answer') { %>
       <div class="row" style="margin-top: -15px">
-          <span class="ui label">内存限制：<%= problem.memory_limit %> MiB</span>
           <span class="ui label">时间限制：<%= problem.time_limit %> ms</span>
+          <span class="ui label">内存限制：<%= problem.memory_limit %> MiB</span>
           <% if (problem.type === 'interaction') { %>
             <span class="ui label">题目类型：交互</span>
           <% } else if (problem.file_io) { %>
