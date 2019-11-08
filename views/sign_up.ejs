@@ -6,27 +6,23 @@
     <p id="error_info"></p>
   </div>
           <form class="ui form">
-                <% if ( syzoj.config.permission.allow_edit_nameplate ) { %>
+                <% if (syzoj.config.permission.allow_edit_nameplate) { %>
                 <div class="two fields">
                     <div class="field">
-                    <label for="username">用户名</label>
-                    <input type="text" id="username" name="username" value="<%= edited_user.username %>"<% if (!user.allowedManage) { %> readonly<% } %>>
+                        <label for="username">用户名</label>
+                        <input type="text" placeholder="" id="username">
                     </div>
                     <div class="field">
-                    <label for="nameplate">真实姓名</label>
-                    <input type="text" id="nameplate" name="nameplate" value="<%= edited_user.nameplate %>">
+                        <label for="username">真实姓名</label>
+                        <input type="text" placeholder="" id="nameplate">
                     </div>
-                    </div>
+                </div>
                 <% } else { %>
-                    <div class="field">
-                    <label for="username">用户名</label>
-                    <input type="text" id="username" name="username" value="<%= edited_user.username %>"<% if (!user.allowedManage) { %> readonly<% } %>>
-                    </div>
-                <% } %>
                 <div class="field">
                     <label for="username">用户名</label>
                     <input type="text" placeholder="" id="username">
                 </div>
+                <% } %> 
                 <div class="field">
                     <label for="email">邮箱</label>
                     <input type="email" placeholder="" id="email">

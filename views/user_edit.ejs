@@ -11,7 +11,7 @@
     </div>
 		<form id="form" action="<%= syzoj.utils.makeUrl(['user', edited_user.id, 'edit']) %>" method="post" onsubmit="return check()">
       <div class="ui form">
-      <% if ( user.allowedManage || syzoj.config.permission.allow_edit_nameplate ) { %>
+      <% if (user.allowedManage || syzoj.config.permission.allow_edit_nameplate) { %>
       <div class="two fields">
         <div class="field">
           <label for="username">用户名</label>
@@ -85,7 +85,7 @@
       let allowedManagePrivilege = user && user.is_admin;
       %>
       <div class="inline field">
-        <% if ( user.user_id != 2 /*xiong_yc*/ ) { %>
+        <% if (user.id != 2 /*xiong_yc*/) { %>
         <label class="ui header">权限</label>
         <div class="ui toggle disabled checkbox" style="margin-right: 20px; ">
           <input disabled="disabled" type="checkbox" <% if (edited_user.is_admin) { %> checked<% } %>>

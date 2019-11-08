@@ -287,8 +287,8 @@ app.get('/problem/:id/edit', async (req, res) => {
       problem.tags = [];
       problem.new = true;
     } else {
-      if (!await problem.isAllowedUseBy(res.locals.user)) throw new ErrorMessage('您没有权限进行此操作。');
       problem.allowedEdit = await problem.isAllowedEditBy(res.locals.user);
+      if (!await problem.isAllowedUseBy(res.locals.user) || !problem.allowedEdit) throw new ErrorMessage('您没有权限进行此操作。');
       problem.tags = await problem.getTags();
     }
 

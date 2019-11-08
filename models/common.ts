@@ -105,7 +105,7 @@ export default class Model extends TypeORM.BaseEntity {
 
     return parseInt((
       await TypeORM.getManager().query(`SELECT COUNT(*) FROM (${query}) AS \`__tmp_table\``, parameters)
-    )[0]['COUNT(*)']);
+)[0]['COUNT(*)']);
   }
 
   static async countForPagination(where) {

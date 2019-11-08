@@ -96,7 +96,14 @@ app.get('/submissions', async (req, res) => {
           throw new ErrorMessage("您没有权限进行此操作。");
         }
       } else {
-        query.andWhere('is_public = true');
+        let qb = Problem.createQueryBuilder().select("id");
+        qb.where('is_public = 1');
+        if (curUser) {
+          let nowGroup = res.locals.user.getUserGroupList();
+          for (let i = 0; i < nowGroup.length; i++)
+            qb.orWhere("user_group_view_problem LIKE '%" + nowGroup[i] + "%'");
+        }
+        query.andWhere('problem_id IN (' + qb.getQuery() + ')') ;
       }
     } else if (req.query.problem_id) {
       query.andWhere('problem_id = :problem_id', { problem_id: parseInt(req.query.problem_id) || 0 });
